@@ -15,10 +15,10 @@ import WordCounter from "./pages/WordCounter"
 import CharacterCounter from "./pages/CharacterCounter"
 import JsonFormatter from "./pages/JsonFormatter"
 import Base64Encoder from "./pages/Base64Encoder"
-import ColorConverter from "./pages/ColorConverter"
-import ColorPaletteGenerator from "./pages/ColorPaletteGenerator"
 import QrGenerator from "./pages/QrGenerator"
-import UnitConverter from "./pages/UnitConverter"
+import VideoToAudio from "./pages/VideoToAudio"
+import CompressVideo from "./pages/CompressVideo"
+import BarcodeGenerator from "./pages/BarcodeGenerator"
 import { FiSearch } from "react-icons/fi"
 import { Link } from "react-router-dom"
 import toolSearchData from "./data/toolSearchData"
@@ -32,7 +32,7 @@ function HomePage() {
   const searchContainerRef = useRef(null)
   const normalizedQuery = searchQuery.trim().toLocaleLowerCase()
   const searchResults = normalizedQuery
-    ? toolSearchData.filter((tool) =>
+    ? toolSearchData.filter((tool) => tool.route && tool.available !== false).filter((tool) =>
       [tool.name, tool.category, ...tool.keywords]
         .join(" ")
         .toLocaleLowerCase()
@@ -153,10 +153,10 @@ function App() {
       <Route path="/tools/character-counter" element={<CharacterCounter />} />
       <Route path="/tools/json-formatter" element={<JsonFormatter />} />
       <Route path="/tools/base64" element={<Base64Encoder />} />
-      <Route path="/tools/color-converter" element={<ColorConverter />} />
-      <Route path="/tools/color-palette-generator" element={<ColorPaletteGenerator />} />
       <Route path="/tools/qr-generator" element={<QrGenerator />} />
-      <Route path="/tools/unit-converter" element={<UnitConverter />} />
+      <Route path="/tools/video-to-audio" element={<VideoToAudio />} />
+      <Route path="/tools/compress-video" element={<CompressVideo />} />
+      <Route path="/tools/barcode-generator" element={<BarcodeGenerator />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

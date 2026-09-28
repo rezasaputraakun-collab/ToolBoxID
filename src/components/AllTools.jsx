@@ -1,137 +1,36 @@
 import {
 	FiCode,
-	FiDroplet,
 	FiFileText,
 	FiHash,
 	FiImage,
 	FiTool,
 	FiType,
+	FiVideo,
 } from "react-icons/fi"
 import { Link } from "react-router-dom"
+import { toolCategories } from "../data/toolSearchData"
 
-const toolCategories = [
-	{
-		name: "Image Tools",
-		Icon: FiImage,
-		tools: [
-			{
-				name: "Compress Image",
-				route: "/tools/compress-image",
-				description: "Reduce image file size while keeping it clear.",
-				Icon: FiImage,
-			},
-			{
-				name: "Resize Image",
-				route: "/tools/resize-image",
-				description: "Resize an image to fit your needs.",
-				Icon: FiImage,
-			},
-		],
-	},
-	{
-		name: "PDF Tools",
-		Icon: FiFileText,
-		tools: [
-			{
-				name: "JPG to PDF",
-				route: "/tools/jpg-to-pdf",
-				description: "Convert JPG images into a PDF document.",
-				Icon: FiFileText,
-			},
-			{
-				name: "Merge PDF",
-				route: "/tools/merge-pdf",
-				description: "Combine multiple PDF files into one.",
-				Icon: FiFileText,
-			},
-		],
-	},
-	{
-		name: "Text Tools",
-		Icon: FiType,
-		tools: [
-			{
-				name: "Word Counter",
-				route: "/tools/word-counter",
-				description: "Count words in your text instantly.",
-				Icon: FiType,
-			},
-			{
-				name: "Character Counter",
-				route: "/tools/character-counter",
-				description: "Check the character count of any text.",
-				Icon: FiHash,
-			},
-		],
-	},
-	{
-		name: "Developer Tools",
-		Icon: FiCode,
-		tools: [
-			{
-				name: "JSON Formatter",
-				route: "/tools/json-formatter",
-				description: "Format JSON to make it easier to read.",
-				Icon: FiCode,
-			},
-			{
-				name: "Base64 Encoder",
-				route: "/tools/base64",
-				description: "Encode text into Base64 format.",
-				Icon: FiHash,
-			},
-		],
-	},
-	{
-		name: "Design & Color Tools",
-		Icon: FiDroplet,
-		tools: [
-			{
-				name: "Color Converter",
-				route: "/tools/color-converter",
-				description: "Convert colors between HEX, RGB, and HSL.",
-				Icon: FiDroplet,
-			},
-			{
-				name: "Color Palette Generator",
-				route: "/tools/color-palette-generator",
-				description: "Build a coordinated palette for your design.",
-				Icon: FiDroplet,
-			},
-		],
-	},
-	{
-		name: "Utility Tools",
-		Icon: FiTool,
-		tools: [
-			{
-				name: "QR Code Generator",
-				route: "/tools/qr-generator",
-				description: "Create a QR code for a link or text.",
-				Icon: FiHash,
-			},
-			{
-				name: "Unit Converter",
-				route: "/tools/unit-converter",
-				description: "Convert common units quickly and easily.",
-				Icon: FiTool,
-			},
-		],
-	},
-]
+const categoryIcons = {
+	image: FiImage,
+	media: FiVideo,
+	pdf: FiFileText,
+	text: FiType,
+	developer: FiCode,
+	utility: FiTool,
+}
 
-const categorySlugs = {
-	"Image Tools": "image",
-	"PDF Tools": "pdf",
-	"Text Tools": "text",
-	"Developer Tools": "developer",
-	"Design & Color Tools": "design-color",
-	"Utility Tools": "utility",
+const toolIcons = {
+	image: FiImage,
+	media: FiVideo,
+	pdf: FiFileText,
+	text: FiType,
+	developer: FiCode,
+	utility: FiHash,
 }
 
 function AllTools({ selectedCategory = "" }) {
-	const visibleCategories = selectedCategory
-		? toolCategories.filter(({ name }) => categorySlugs[name] === selectedCategory)
+	const categories = selectedCategory
+		? toolCategories.filter(({ slug }) => slug === selectedCategory)
 		: toolCategories
 
 	return (
@@ -144,34 +43,66 @@ function AllTools({ selectedCategory = "" }) {
 					<p className="mt-3 text-base text-[#5d665f]">
 						Browse all available tools, organized by category.
 					</p>
+					{selectedCategory && (
+						<Link
+							to="/#all-tools"
+							className="mt-4 inline-flex min-h-10 items-center text-sm font-medium text-[#1d4ed8] underline underline-offset-4"
+						>
+							Show all tools
+						</Link>
+					)}
 				</div>
 
 				<div className="space-y-12">
-					{visibleCategories.map(({ name, Icon, tools }) => (
-						<section key={name} id={`category-${categorySlugs[name]}`} aria-label={name}>
-							<div className="mb-5 flex items-center gap-3">
-								<Icon aria-hidden="true" className="text-xl text-[#2563eb]" />
-								<h3 className="text-2xl font-semibold text-[#20271f]">{name}</h3>
-							</div>
-							<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-								{tools.map(({ name: toolName, description, Icon: ToolIcon, route }) => (
-									<Link
-										key={toolName}
-										to={route}
-										className="block min-h-36 border border-[#dbe7fb] bg-white p-5 transition-colors hover:border-[#93b4f5]"
-									>
-										<ToolIcon aria-hidden="true" className="text-xl text-[#5275b7]" />
-										<h4 className="mt-3 text-lg font-semibold text-[#20271f]">
-											{toolName}
-										</h4>
-										<p className="mt-2 text-sm leading-6 text-[#5d665f]">
-											{description}
-										</p>
-									</Link>
-								))}
-							</div>
-						</section>
-					))}
+					{categories.map(({ name, slug, icon, tools }) => {
+						const CategoryIcon = categoryIcons[icon]
+
+						return (
+							<section key={slug} id={`category-${slug}`} aria-label={name}>
+								<div className="mb-5 flex items-center gap-3">
+									<CategoryIcon aria-hidden="true" className="text-xl text-[#2563eb]" />
+									<h3 className="text-2xl font-semibold text-[#20271f]">{name}</h3>
+								</div>
+								<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+									{tools.map(({ name: toolName, description, route, available = true }) => {
+										const ToolIcon = toolIcons[icon] || FiHash
+										const cardClassName = "block min-h-36 border border-[#dbe7fb] bg-white p-5 transition-colors"
+
+										const content = (
+											<>
+												<ToolIcon aria-hidden="true" className="text-xl text-[#5275b7]" />
+												<h4 className="mt-3 text-lg font-semibold text-[#20271f]">
+													{toolName}
+												</h4>
+												<p className="mt-2 text-sm leading-6 text-[#5d665f]">
+													{description}
+												</p>
+												{!available && (
+													<span className="mt-3 inline-block text-xs font-semibold uppercase text-[#5275b7]">
+														Coming soon
+													</span>
+												)}
+											</>
+										)
+
+										return route && available ? (
+											<Link
+												key={toolName}
+												to={route}
+												className={`${cardClassName} hover:border-[#93b4f5] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#60a5fa]`}
+											>
+												{content}
+											</Link>
+										) : (
+											<article key={toolName} className={`${cardClassName} border-dashed`}>
+												{content}
+												</article>
+										)
+									})}
+								</div>
+							</section>
+						)
+					})}
 				</div>
 			</div>
 		</section>

@@ -1,6 +1,5 @@
 import {
 	FiCode,
-	FiDroplet,
 	FiFileText,
 	FiImage,
 	FiTool,
@@ -14,7 +13,6 @@ const categories = [
 	{ name: "PDF Tools", Icon: FiFileText },
 	{ name: "Text Tools", Icon: FiType },
 	{ name: "Developer Tools", Icon: FiCode },
-	{ name: "Design & Color Tools", Icon: FiDroplet },
 	{ name: "Utility Tools", Icon: FiTool },
 ]
 
